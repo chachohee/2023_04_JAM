@@ -52,7 +52,7 @@ public class Main {
 					
 					pstmt = conn.prepareStatement(sql);
 					pstmt.executeUpdate();
-					System.out.println("글이 등되었습니다.");
+					System.out.println("글이 등록되었습니다.");
 					
 				} catch (ClassNotFoundException e) {
 					System.out.println("드라이버 로딩 실패");

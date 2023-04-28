@@ -13,11 +13,17 @@ public class App {
 	public void run() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
-		System.out.println("== 프로그램 시작 ==");
-
 		Scanner sc = new Scanner(System.in);
 		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+			conn = DriverManager.getConnection(url, "root", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		
+		System.out.println("== 프로그램 시작 ==");
 		while (true) {
 			List<Article> articles = new ArrayList<>();
 			System.out.printf("명령어) ");
@@ -35,10 +41,6 @@ public class App {
 				String body = sc.nextLine();
 				
 				try {
-					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-
-					conn = DriverManager.getConnection(url, "root", "");
 					String sql = "insert into article";
 					sql += " set regDate = now(),";
 					sql += " updateDate = now(),";
@@ -49,35 +51,13 @@ public class App {
 					pstmt.executeUpdate();
 					System.out.println("글이 등록되었습니다.");
 					
-				} catch (ClassNotFoundException e) {
-					System.out.println("드라이버 로딩 실패");
 				} catch (SQLException e) {
 					System.out.println("에러: " + e);
-				} finally {
-					try {
-						if (pstmt != null && !pstmt.isClosed()) {
-							pstmt.close();
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					try {
-						if (conn != null && !conn.isClosed()) {
-							conn.close();
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
 				}
 
 			} else if (cmd.equals("article list")) {
 				try {
-					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-
-					conn = DriverManager.getConnection(url, "root", "");
 					String sql = "select * from article";
-					
 					pstmt = conn.prepareStatement(sql);
 					ResultSet rs = pstmt.executeQuery();
 					while (rs.next()) {
@@ -90,27 +70,9 @@ public class App {
 						articles.add(article);
 					}
 					rs.close();
-					
-				} catch (ClassNotFoundException e) {
-					System.out.println("드라이버 로딩 실패");
 				} catch (SQLException e) {
 					System.out.println("에러: " + e);
-				} finally {
-					try {
-						if (pstmt != null && !pstmt.isClosed()) {
-							pstmt.close();
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					try {
-						if (conn != null && !conn.isClosed()) {
-							conn.close();
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
+				} 
 				
 				if (articles.size() == 0) {
 					System.out.println("존재하는 게시물이 없습니다");
@@ -136,10 +98,6 @@ public class App {
 				System.out.printf("수정할 내용 : ");
 				String modBody = sc.nextLine();
 				try {
-					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-
-					conn = DriverManager.getConnection(url, "root", "");
 					String sql = "update article set title = '";
 					sql += modTitle + "', `body` = '";
 					sql += modBody + "' ";
@@ -148,34 +106,31 @@ public class App {
 					
 					pstmt = conn.prepareStatement(sql);
 					pstmt.executeUpdate();
-					
-					
-				} catch (ClassNotFoundException e) {
-					System.out.println("드라이버 로딩 실패");
+
 				} catch (SQLException e) {
 					System.out.println("에러: " + e);
-				} finally {
-					try {
-						if (pstmt != null && !pstmt.isClosed()) {
-							pstmt.close();
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					try {
-						if (conn != null && !conn.isClosed()) {
-							conn.close();
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
+				} 
 				System.out.println(id + "번 글이 수정되었습니다.");
 			}
+		}//end while
+		
+		try {
+			if (pstmt != null && !pstmt.isClosed()) {
+				pstmt.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-
+		try {
+			if (conn != null && !conn.isClosed()) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		sc.close();
-	
+		}//end finally(자원 끄는 거-> pstmt랑 conn)
 		System.out.println("== 프로그램 끝 ==");
 	}
 

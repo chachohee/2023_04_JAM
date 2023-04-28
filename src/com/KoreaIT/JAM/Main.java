@@ -19,12 +19,10 @@ public class Main {
 
 		Scanner sc = new Scanner(System.in);
 
-		int lastArticleId = 0;
-
-		List<Article> articles = new ArrayList<>();
-		
+//		List<Article> articles = new ArrayList<>();
 		
 		while (true) {
+			List<Article> articles = new ArrayList<>();
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine();
 
@@ -88,12 +86,10 @@ public class Main {
 					while (rs.next()) {
 						int id = rs.getInt("id");
 						String title = rs.getString("title");
-						String body = rs.getString("body");
 						
 						Article article = new Article();
 						article.setId(id);
 						article.setTitle(title);
-						article.setBody(body);
 						articles.add(article);
 					}
 					rs.close();
@@ -119,7 +115,6 @@ public class Main {
 					}
 				}
 				
-				
 				if (articles.size() == 0) {
 					System.out.println("존재하는 게시물이 없습니다");
 					continue;
@@ -132,6 +127,53 @@ public class Main {
 
 					System.out.printf("%d	|	%s	\n", article.id, article.title);
 				}
+				
+			} else if (cmd.startsWith("article modify ")){
+//				String[] cmdBits = cmd.split(" ");
+//				int id = Integer.parseInt(cmdBits[2]);
+				int id = Integer.parseInt(cmd.split(" ")[2]);
+				System.out.println(id + "번 게시글 수정중...");
+				
+				System.out.printf("수정할 제목 : ");
+				String modTitle = sc.nextLine();
+				System.out.printf("수정할 내용 : ");
+				String modBody = sc.nextLine();
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+
+					conn = DriverManager.getConnection(url, "root", "");
+					String sql = "update article set title = '";
+					sql += modTitle + "', `body` = '";
+					sql += modBody + "' ";
+					sql += "where id = ";
+					sql += + id;
+					
+					pstmt = conn.prepareStatement(sql);
+					pstmt.executeUpdate();
+					
+					
+				} catch (ClassNotFoundException e) {
+					System.out.println("드라이버 로딩 실패");
+				} catch (SQLException e) {
+					System.out.println("에러: " + e);
+				} finally {
+					try {
+						if (pstmt != null && !pstmt.isClosed()) {
+							pstmt.close();
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					try {
+						if (conn != null && !conn.isClosed()) {
+							conn.close();
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				System.out.println(id + "번 글이 수정되었습니다.");
 			}
 		}
 

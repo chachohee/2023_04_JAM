@@ -1,4 +1,4 @@
-package com.KoreaIT.JAM;
+package com.KoreaIT.JAM.test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class App {
+import com.KoreaIT.JAM.Article;
+
+public class AppTest {
 	//1. db 연결
 	//2. 데이터 write, list, modify, delete
+	
 	public void run() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

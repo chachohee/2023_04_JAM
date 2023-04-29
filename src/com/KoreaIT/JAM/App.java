@@ -77,7 +77,6 @@ public class App {
 								rs.close();
 							}
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -99,8 +98,8 @@ public class App {
 					
 				//글 수정
 				} else if (cmd.startsWith("article modify ")) {
-//					String[] cmdBits = cmd.split(" ");
-//					int id = Integer.parseInt(cmdBits[2]);
+					// String[] cmdBits = cmd.split(" ");
+					// int id = Integer.parseInt(cmdBits[2]);
 					int id = Integer.parseInt(cmd.split(" ")[2]);//공백을 기준으로 나눠서 배열 3번째(012중 2)에 있는 거 가져옴
 					System.out.println(id + "번 게시글 수정중...");
 					System.out.print("수정할 제목 : ");

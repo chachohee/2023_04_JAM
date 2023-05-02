@@ -3,10 +3,10 @@ package com.KoreaIT.JAM;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.KoreaIT.JAM.util.DBUtil;
@@ -60,46 +60,28 @@ public class App {
 				//글 조회
 				} else if (cmd.equals("article list")) {
 					List<Article> articles = new ArrayList<>();
-					String query = "select * from article";
-					ResultSet rs = null;
 					
-					try {
-						pstmt = conn.prepareStatement(query);
-						rs = pstmt.executeQuery();
-						
-						while (rs.next()) {
-							int id = rs.getInt("id");
-							String regDate = rs.getString("regDate");
-							String updateDate = rs.getString("updateDate");
-							String title = rs.getString("title");
-							String body = rs.getString("body");
-
-							Article article = new Article(id, regDate, updateDate, title, body);
-							articles.add(article);
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					} finally {
-						try {
-							if (rs != null && !rs.isClosed()) {
-								rs.close();
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
+					SecSql sql = new SecSql();
+					
+					sql.append("SELECT *");
+					sql.append("FROM article");
+					sql.append("ORDER BY id DESC");
+					
+					List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
+					
+					for(Map<String, Object> articleMap : articleListMap) {
+						articles.add(new Article(articleMap));
 					}
-					
+
 					if (articles.size() == 0) {
 						System.out.println("존재하는 게시물이 없습니다");
 						continue;
 					}
-					
-					System.out.println("번호	|	제목");
+					System.out.println("== 게시물 리스트 ==");
+					System.out.println("번호	|	제목	|	날짜");
 
 					for (Article article : articles) {
-						int id = article.getId();
-						String title = article.getTitle();
-						System.out.printf("%d	|	%s\n", id, title);
+						System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, article.regDate);
 					}
 					
 					System.out.println();

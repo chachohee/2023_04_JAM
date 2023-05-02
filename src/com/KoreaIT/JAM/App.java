@@ -109,19 +109,33 @@ public class App {
 					// String[] cmdBits = cmd.split(" ");
 					// int id = Integer.parseInt(cmdBits[2]);
 					int id = Integer.parseInt(cmd.split(" ")[2]);//공백을 기준으로 나눠서 배열 3번째(012중 2)에 있는 거 가져옴
-					System.out.println(id + "번 게시글 수정중...");
-					System.out.print("수정할 제목 : ");
-					String title = sc.nextLine();
-					System.out.print("수정할 내용 : ");
-					String body = sc.nextLine();
+					System.out.printf("== %d번 게시글 수정 ==\n", id);
+
+					SecSql sql = SecSql.from("SELECT COUNT(*)");
+					sql.append("FROM article");
+					sql.append("WHERE id = ?", id);
 					
-					String query = "update article set "
-							+ "title = '" + title + "'"
-							+ ", `body` = '" + body + "'"
-							+ " where id = " + id;
-					pstmt = conn.prepareStatement(query);
-					pstmt.executeUpdate();
-					System.out.println(id + "번 글이 수정되었습니다.");
+					int articleCount = DBUtil.selectRowIntValue(conn, sql);
+					
+					if (articleCount == 0) {
+						System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
+						continue;
+					}
+					
+					System.out.printf("수정할 제목 : ");
+					String title = sc.nextLine();
+					System.out.printf("수정할 내용 : ");
+					String body = sc.nextLine();
+
+					sql = SecSql.from("UPDATE article");
+					sql.append("SET updateDate = NOW()");
+					sql.append(", title = ?", title);
+					sql.append(", `body` = ?", body);
+					sql.append("WHERE id = ?", id);
+					
+					DBUtil.update(conn, sql);
+					
+					System.out.printf("%d번 게시글이 수정되었습니다\n", id);
 					System.out.println();
 					
 				//글 삭제

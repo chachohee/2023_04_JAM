@@ -2,7 +2,6 @@ package com.KoreaIT.JAM;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ public class App {
 	//2. 데이터 write, list, modify, delete
 	public void run() {
 		Connection conn = null;
-		PreparedStatement pstmt = null;
 		Scanner sc = new Scanner(System.in);
 		
 		try {
@@ -123,10 +121,11 @@ public class App {
 				//글 삭제
 				} else if (cmd.startsWith("article delete ")) {
 					int id = Integer.parseInt(cmd.split(" ")[2]); 
-					String query = "delete from article where id = " + id;
-					pstmt = conn.prepareStatement(query);
-					pstmt.executeUpdate();
-					System.out.println(id + "번 글이 삭제되었습니다.");
+					SecSql sql = SecSql.from("delete from article");
+					sql.append("where id =?", id);
+					DBUtil.delete(conn, sql);
+					
+					System.out.printf("%d번 글이 삭제되었습니다.", id);
 					System.out.println();
 				}
 			} //end while(데이터 삽입, 조회, 수정, 삭제)
@@ -136,13 +135,6 @@ public class App {
 		} catch (SQLException e) {
 			System.out.println("에러: " + e);
 		} finally {
-			try {
-				if (pstmt != null && !pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 			try {
 				if (conn != null && !conn.isClosed()) {
 					conn.close();

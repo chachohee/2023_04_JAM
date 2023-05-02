@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.KoreaIT.JAM.util.DBUtil;
+import com.KoreaIT.JAM.util.SecSql;
+
 public class App {
 	//1. db 연결
 	//2. 데이터 write, list, modify, delete
@@ -35,18 +38,23 @@ public class App {
 				
 				//글 작성
 				if (cmd.equals("article write")) {
+					System.out.println("== 게시물 작성 ==");
 					System.out.print("제목: ");
 					String title = sc.nextLine();
 					System.out.print("내용: ");
 					String body = sc.nextLine();
-					String query = "insert into article set "
-							+ "regDate = now()"
-							+ ", updateDate = now()"
-							+ ", title = '" + title + "'"
-							+ ", `body` = '" + body + "'" ;
-					pstmt = conn.prepareStatement(query);
-					pstmt.executeUpdate();
-					System.out.println("글이 등록되었습니다.");
+					
+					SecSql sql = new SecSql();
+					sql.append("INSERT INTO article");
+					sql.append("SET regDate = NOW()");
+					sql.append(", updateDate = NOW()");
+					sql.append(", title = ?", title);
+					sql.append(", `body` = ?", body);
+					
+					int id = DBUtil.insert(conn, sql);
+					
+					System.out.printf("%d번 게시글이 생성되었습니다\n", id);
+					
 					System.out.println();
 					
 				//글 조회

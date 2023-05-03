@@ -29,6 +29,7 @@ public class App {
 			while (true) {
 				System.out.printf("명령어) ");
 				String cmd = sc.nextLine().trim();
+				cmd= cmd.toLowerCase();
 				
 				if (cmd.equals("exit")) {
 					System.out.println("=====프로그램 종료=====");
@@ -97,7 +98,9 @@ public class App {
 					sql.append("WHERE id = ?", id);
 					
 					int articleCount = DBUtil.selectRowIntValue(conn, sql);
-					
+					//articleCount == 0 으로 비교한 이유는 count함수를 썼기 때문
+					//articleCount에는 컬럼에 해당하는 데이터를 가져옴.
+					//id로 조회했다면 조회하려는 id 번호를 가져왔을 것임.
 					if (articleCount == 0) {
 						System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
 						continue;
@@ -122,10 +125,21 @@ public class App {
 				//글 삭제
 				} else if (cmd.startsWith("article delete ")) {
 					int id = Integer.parseInt(cmd.split(" ")[2]); 
-					SecSql sql = SecSql.from("delete from article");
+					
+					SecSql sql = new SecSql();
+					sql.append("SELECT COUNT(*) > 0");
+					sql.append("FROM article");
+					sql.append("WHERE id = ?", id);
+					
+					boolean existArticle = DBUtil.selectRowBooleanValue(conn, sql);
+					if (!existArticle) {
+						System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
+						continue;
+					}
+					
+					sql = SecSql.from("delete from article");
 					sql.append("where id =?", id);
 					DBUtil.delete(conn, sql);
-					
 					System.out.printf("%d번 글이 삭제되었습니다.", id);
 					System.out.println();
 					
@@ -154,9 +168,44 @@ public class App {
 					System.out.println("등록일: " + article.regDate);
 					System.out.println("수정일: " + article.updateDate);
 					System.out.println();
+				
+				//회원가입
+				} else if (cmd.equals("member join")) {
+					System.out.println("== 회원가입 ==");
+					System.out.printf("로그인 아이디 : ");
+					String loginId = sc.nextLine().trim();
+					System.out.printf("로그인 비밀번호 : ");
+					String loginPw = sc.nextLine().trim();
+					System.out.printf("로그인 비밀번호 확인 : ");
+					String _loginPw = sc.nextLine().trim();
+					
+					if (loginPw.equals(_loginPw)) {
+						System.out.printf("이름: ");
+						String name = sc.nextLine().trim();
+						if (loginId.isEmpty() || loginPw.isEmpty() || name.isEmpty()) {
+							System.out.println("아이디, 비밀번호, 이름은 필수입니다.");
+						} else {
+							SecSql sql = new SecSql();
+							sql.append("INSERT INTO `member`");
+							sql.append("SET regDate = NOW()");
+							sql.append(", updateDate = NOW()");
+							sql.append(", loginId = ?", loginId);
+							sql.append(", loginPw = ?", loginPw);
+							sql.append(", `name` = ?", name);
+						
+							int id = DBUtil.insert(conn, sql);
+			
+							System.out.printf("%d번째 회원이 생성되었습니다\n", id);
+							System.out.println();
+						}
+					} else if (!loginPw.equals(_loginPw)) {
+						System.out.println("비밀번호가 일치하지 않습니다.");
+					}
+					continue;
+				} else {
+					System.out.println("존재하는 명령어가 없습니다.");
 				}
 			} //end while(데이터 삽입, 조회, 수정, 삭제, 상세)
-			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");
 		} catch (SQLException e) {

@@ -37,3 +37,17 @@ updateDate = NOW(),
 title = CONCAT('제목', RAND()),
 `body` = CONCAT('내용', RAND())
 ;
+
+//MEMER
+CREATE TABLE `member`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    loginId VARCHAR(20) NOT NULL,
+    loginPw VARCHAR(30) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL
+);
+SELECT * FROM `member`;
+DROP TABLE `member`;
+ALTER TABLE `member` MODIFY COLUMN loginId VARCHAR(50) NOT NULL UNIQUE;
+DESC `member`;

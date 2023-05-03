@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -127,8 +128,34 @@ public class App {
 					
 					System.out.printf("%d번 글이 삭제되었습니다.", id);
 					System.out.println();
+					
+				//글 상세
+				} else if (cmd.startsWith("article detail ")) {
+					
+					int id = Integer.parseInt(cmd.split(" ")[2]);
+					
+					SecSql sql = SecSql.from("SELECT *");
+					sql.append("FROM article");
+					sql.append("WHERE id = ?", id);
+					
+					Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+					//DBUtil.selectRow는 받아올 데이터가 없을 때 new HashMap<>()을 리턴함.
+					if (articleMap.isEmpty()) {
+						System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
+						continue;
+					}
+					
+					Article article = new Article(articleMap);
+					
+					System.out.printf("== %d번 게시글 상세보기 ==\n", id);
+					System.out.println("아이디: " + article.id);
+					System.out.println("제목: " + article.title);
+					System.out.println("내용: " + article.body);
+					System.out.println("등록일: " + article.regDate);
+					System.out.println("수정일: " + article.updateDate);
+					System.out.println();
 				}
-			} //end while(데이터 삽입, 조회, 수정, 삭제)
+			} //end while(데이터 삽입, 조회, 수정, 삭제, 상세)
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패");

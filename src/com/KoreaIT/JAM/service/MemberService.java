@@ -2,7 +2,7 @@ package com.KoreaIT.JAM.service;
 
 import java.sql.Connection;
 
-import com.KoreaIT.JAM.dto.MemberDAO;
+import com.KoreaIT.JAM.dao.MemberDAO;
 
 public class MemberService {
 

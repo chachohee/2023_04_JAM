@@ -3,7 +3,7 @@ package com.KoreaIT.JAM.service;
 import java.sql.Connection;
 import java.util.Map;
 
-import com.KoreaIT.JAM.dto.ArticleDAO;
+import com.KoreaIT.JAM.dao.ArticleDAO;
 
 public class ArticleService {
 	ArticleDAO articleDAO;

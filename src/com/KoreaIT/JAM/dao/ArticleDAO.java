@@ -1,4 +1,4 @@
-package com.KoreaIT.JAM.dto;
+package com.KoreaIT.JAM.dao;
 
 import java.sql.Connection;
 import java.util.Map;

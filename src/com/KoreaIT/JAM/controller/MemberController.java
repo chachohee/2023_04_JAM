@@ -8,12 +8,10 @@ import com.KoreaIT.JAM.util.SecSql;
 
 public class MemberController {
 	private Scanner sc;
-	private Connection conn;
 	private MemberService memberService;
 	
 	public MemberController(Connection conn, Scanner sc) {
 		this.sc = sc;
-		this.conn = conn;
 		memberService = new MemberService(conn);
 	}
 

@@ -12,7 +12,7 @@ public class ArticleDAO {
 	private SecSql sql;
 
 	public ArticleDAO(Connection conn) {
-		
+		this.conn = conn;
 	}
 	
 	//게시글 존재 여부(boolean)
@@ -55,8 +55,9 @@ public class ArticleDAO {
 	}
 	
 	public int deleteArticle(int id) {
-		sql = SecSql.from("delete from article");
-		sql.append("where id =?", id);
+		sql = SecSql.from("DELETE FROM article");
+		sql.append("WHERE id =?", id);
+		DBUtil.delete(conn, sql);
 		return id;
 	}
 	

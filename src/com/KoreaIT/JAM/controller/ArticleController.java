@@ -94,6 +94,7 @@ public class ArticleController {
 			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
 			return;
 		}
+		
 		id = articleService.doDelete(id);
 		System.out.printf("%d번 글이 삭제되었습니다.", id);
 		System.out.println();

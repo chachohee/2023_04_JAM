@@ -32,17 +32,13 @@ public class ArticleController {
 	}
 	
 	public void showDetail(String cmd) {
-
-		int id = Integer.parseInt(cmd.split(" ")[2]);	
-		Map<String, Object> articleMap = articleService.showDetail(id);
-		//DBUtil.selectRow는 받아올 데이터가 없을 때 new HashMap<>()을 리턴함.
-		if (articleMap.isEmpty()) {
+		int id = Integer.parseInt(cmd.split(" ")[2]);
+		Article article = articleService.getArticle(id);
+		if (article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
+			System.out.println();
 			return;
 		}
-		
-		Article article = new Article(articleMap);
-		
 		System.out.printf("== %d번 게시글 상세보기 ==\n", id);
 		System.out.println("아이디: " + article.id);
 		System.out.println("제목: " + article.title);
@@ -54,18 +50,15 @@ public class ArticleController {
 	
 	public void showList() {
 		List<Article> articles = articleService.getArticles();
-
 		if (articles.size() == 0) {
 			System.out.println("존재하는 게시물이 없습니다");
 			return;
 		}
 		System.out.println("== 게시물 리스트 ==");
 		System.out.println("번호	|	제목	|	날짜");
-
 		for (Article article : articles) {
 			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, article.regDate);
 		}
-		
 		System.out.println();
 	}
 	
@@ -97,12 +90,10 @@ public class ArticleController {
 	public void doDelete(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]); 
 		boolean existArticle = articleService.existingArticle(id);
-		
 		if (!existArticle) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
 			return;
 		}
-		
 		id = articleService.doDelete(id);
 		System.out.printf("%d번 글이 삭제되었습니다.", id);
 		System.out.println();

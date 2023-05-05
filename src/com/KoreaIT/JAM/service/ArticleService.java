@@ -30,16 +30,18 @@ public class ArticleService {
 		return articleDAO.insertArticle(title, body);
 	}
 	
-	public Map<String, Object> showDetail(int id) {
-		return articleDAO.selectById(id);
+	public Article getArticle(int id) {
+		Map<String, Object> articleMap = articleDAO.selectArticleById(id);
+		//DBUtil.selectRow는 받아올 데이터가 없을 때 new HashMap<>()을 리턴함.
+		if (articleMap.isEmpty()) {
+			return null;
+		}
+		return new Article(articleMap);
 	}
 	
 	public List<Article> getArticles() {
-		List<Map<String, Object>> articleListMap = articleDAO.getArticles();
-		
+		List<Map<String, Object>> articleListMap = articleDAO.selectAllArticles();
 		List<Article> articles = new ArrayList<>();
-		
-		
 		for(Map<String, Object> articleMap : articleListMap) {
 			articles.add(new Article(articleMap));
 		}

@@ -14,8 +14,7 @@ import com.KoreaIT.JAM.util.DBUtil;
 import com.KoreaIT.JAM.util.SecSql;
 
 public class App {
-	//1. db 연결
-	//2. 데이터 write, list, modify, delete
+
 	public void run() {
 		Connection conn = null;
 		Scanner sc = new Scanner(System.in);
@@ -31,7 +30,6 @@ public class App {
 			MemberController memberController = new MemberController(conn, sc);
 			ArticleController articleController = new ArticleController(conn, sc);
 			
-			
 			while (true) {
 				
 				System.out.printf("명령어) ");
@@ -42,31 +40,24 @@ public class App {
 					System.out.println("=====프로그램 종료=====");
 					break;	
 				}
-				
 				//회원가입
 				if (cmd.equals("member join")) {
 					memberController.doJoin();
-					
 				//글 작성
 				} else if (cmd.equals("article write")) {
 					articleController.doWrite();
-					
 				//글 조회
 				} else if (cmd.equals("article list")) {
 					articleController.showList();
-					
 				//글 수정
 				} else if (cmd.startsWith("article modify ")) {
 					articleController.doModify(cmd);
-					
 				//글 삭제
 				} else if (cmd.startsWith("article delete ")) {
-					articleController.doDelete(cmd);
-					
+					articleController.doDelete(cmd);	
 				//글 상세
 				} else if (cmd.startsWith("article detail ")) {
 					articleController.showDetail(cmd);
-				
 				} else {
 					System.out.println("존재하는 명령어가 없습니다.");
 				}

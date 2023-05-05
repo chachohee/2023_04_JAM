@@ -17,7 +17,6 @@ public class MemberController {
 
 	public void doJoin() {
 		System.out.println("== 회원가입 ==");
-		SecSql sql = new SecSql();
 		String loginId = null;
 		String loginPw = null;
 		String _loginPw = null;
@@ -34,10 +33,10 @@ public class MemberController {
 			boolean isloginIdDup = memberService.isLoginIdDup(loginId);
 			
 			if (isloginIdDup) {
-				System.out.println(loginId + "는 이미 사용중인 아이디입니다.");
+				System.out.println(loginId + "(은)는 이미 사용중인 아이디입니다.");
 				continue;
 			}
-			System.out.println(loginId + "는 사용 가능합니다.");
+			System.out.println(loginId + "(은)는 사용 가능합니다.");
 			break;
 		}
 		
@@ -71,7 +70,6 @@ public class MemberController {
 			System.out.println();
 			break;
 		}
-		
 	}
 }
 

@@ -17,7 +17,8 @@ public class ArticleDAO {
 	
 	//게시글 존재 여부(boolean)
 	public boolean existingArticle(int id) {
-		sql = SecSql.from("SELECT COUNT(*) > 0");
+		sql = new SecSql();
+		sql.append("SELECT COUNT(*) > 0");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
 		return DBUtil.selectRowBooleanValue(conn, sql);
@@ -25,7 +26,8 @@ public class ArticleDAO {
 	
 	//게시글 존재 여부(int)
 	public int existingArticleInt(int id) {
-		SecSql sql = SecSql.from("SELECT COUNT(*)");
+		sql = new SecSql();
+		sql.append("SELECT COUNT(*)");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
 		
@@ -43,8 +45,9 @@ public class ArticleDAO {
 		return DBUtil.insert(conn, sql);
 	}
 	
-	public Map<String, Object> selectById(int id) {
-		SecSql sql = SecSql.from("SELECT *");
+	public Map<String, Object> selectArticleById(int id) {
+		sql = new SecSql();
+		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
 		Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
@@ -52,13 +55,14 @@ public class ArticleDAO {
 	}
 	
 	public int deleteArticle(int id) {
-		sql = SecSql.from("DELETE FROM article");
+		sql = new SecSql();
+		sql.append("DELETE FROM article");
 		sql.append("WHERE id =?", id);
 		DBUtil.delete(conn, sql);
 		return id;
 	}
 	
-	public List<Map<String, Object>> getArticles() {
+	public List<Map<String, Object>> selectAllArticles() {
 		sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM article");
@@ -70,8 +74,8 @@ public class ArticleDAO {
 	}
 	
 	public int updateArticle(int id, String title, String body) {
-
-		sql = SecSql.from("UPDATE article");
+		sql = new SecSql();
+		sql.append("UPDATE article");
 		sql.append("SET updateDate = NOW()");
 		sql.append(", title = ?", title);
 		sql.append(", `body` = ?", body);

@@ -73,7 +73,15 @@ public class ArticleController {
 		// String[] cmdBits = cmd.split(" ");
 		// int id = Integer.parseInt(cmdBits[2]);
 		int id = Integer.parseInt(cmd.split(" ")[2]);//공백을 기준으로 나눠서 배열 3번째(012중 2)에 있는 거 가져옴
-		articleService.existingArticleInt(id);
+		int articleCount = articleService.existingArticleInt(id);
+		//articleCount == 0 으로 비교한 이유는 count함수를 썼기 때문
+		//articleCount에는 컬럼에 해당하는 데이터를 가져옴.
+		//id로 조회했다면 조회하려는 id 번호를 가져왔을 것임.
+		if (articleCount == 0) {
+			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
+			System.out.println();
+			return;
+		}
 		
 		System.out.printf("== %d번 게시글 수정 ==\n", id);
 		System.out.printf("수정할 제목 : ");

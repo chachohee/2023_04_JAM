@@ -21,15 +21,9 @@ public class ArticleService {
 		return articleDAO.existingArticle(id);
 	}
 	
-	public void existingArticleInt(int id) {
+	public int existingArticleInt(int id) {
 		int articleCount = articleDAO.existingArticleInt(id);
-		//articleCount == 0 으로 비교한 이유는 count함수를 썼기 때문
-		//articleCount에는 컬럼에 해당하는 데이터를 가져옴.
-		//id로 조회했다면 조회하려는 id 번호를 가져왔을 것임.
-		if (articleCount == 0) {
-			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
-			return;
-		}
+		return articleCount;
 	}
 	
 	public int doWrite(String title, String body) {

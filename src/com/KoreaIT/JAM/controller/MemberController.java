@@ -65,11 +65,11 @@ public class MemberController {
 				System.out.println("이름은 필수입니다.");
 				continue;
 			}
-			memberService.doJoin(loginId, loginPw, name);
 			int id = memberService.doJoin(loginId, loginPw, name);
 			System.out.printf("%d번째 회원이 생성되었습니다\n", id);
 			System.out.printf("%s님 환영합니다~\n", name);
 			System.out.println();
+			break;
 		}
 		
 	}

@@ -7,13 +7,14 @@ import com.KoreaIT.JAM.util.SecSql;
 
 public class MemberDAO {
 	private Connection conn;
+	SecSql sql;
 	
 	public MemberDAO(Connection conn) {
 		this.conn = conn;
 	}
 	
 	public boolean isLoginIdDup(String loginId) {
-		SecSql sql = new SecSql();
+		sql = new SecSql();
 		sql.append("SELECT COUNT(*) > 0");
 		sql.append("FROM `member`");
 		sql.append("WHERE loginId=?", loginId);
@@ -21,8 +22,7 @@ public class MemberDAO {
 	}
 
 	public int doJoin(String loginId, String loginPw, String name) {
-		SecSql sql = new SecSql();
-		sql.append("INSERT INTO `member`");
+		sql = sql.from("INSERT INTO `member`");
 		sql.append("SET regDate = NOW()");
 		sql.append(", updateDate = NOW()");
 		sql.append(", loginId = ?", loginId);

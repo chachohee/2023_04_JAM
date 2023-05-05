@@ -50,30 +50,28 @@ public class MemberController {
 			}
 			System.out.printf("로그인 비밀번호 확인 : ");
 			_loginPw = sc.nextLine().trim();
-			if (loginPw.equals(_loginPw)) {
+			if (!loginPw.equals(_loginPw)) {
+				System.out.println("비밀번호가 일치하지 않습니다.");
+				continue;
+			}
+			System.out.println("비밀번호가 일치합니다.");
+			break;
+		}
+		
+		while(true) {
 			System.out.printf("이름: ");
-			name = sc.nextLine().trim();
+			name = sc.nextLine().trim();	
 			if (loginId.isEmpty() || loginPw.isEmpty() || name.isEmpty()) {
 				System.out.println("이름은 필수입니다.");
-			} else {
-				sql = new SecSql();
-				sql.append("INSERT INTO `member`");
-				sql.append("SET regDate = NOW()");
-				sql.append(", updateDate = NOW()");
-				sql.append(", loginId = ?", loginId);
-				sql.append(", loginPw = ?", loginPw);
-				sql.append(", `name` = ?", name);
-			
-				int id = memberService.doJoin(loginId, _loginPw, name);
-				System.out.printf("%d번째 회원이 생성되었습니다\n", id);
-				System.out.println();
-				break;
+				continue;
 			}
-		} else if (!loginPw.equals(_loginPw)) {
-			System.out.println("비밀번호가 일치하지 않습니다.");
+			memberService.doJoin(loginId, loginPw, name);
+			int id = memberService.doJoin(loginId, loginPw, name);
+			System.out.printf("%d번째 회원이 생성되었습니다\n", id);
+			System.out.printf("%s님 환영합니다~\n", name);
+			System.out.println();
 		}
-		continue;	
-		}
+		
 	}
-
 }
+

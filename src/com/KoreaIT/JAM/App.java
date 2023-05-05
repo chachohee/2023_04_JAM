@@ -36,7 +36,7 @@ public class App {
 				
 				System.out.printf("명령어) ");
 				String cmd = sc.nextLine().trim();
-				cmd= cmd.toLowerCase();
+				cmd = cmd.toLowerCase();
 				
 				if (cmd.equals("exit")) {
 					System.out.println("=====프로그램 종료=====");

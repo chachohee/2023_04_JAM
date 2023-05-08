@@ -43,6 +43,9 @@ public class App {
 				//회원가입
 				if (cmd.equals("member join")) {
 					memberController.doJoin();
+				//로그인	
+				} else if (cmd.equals("member login")) {
+					memberController.doLogin();
 				//글 작성
 				} else if (cmd.equals("article write")) {
 					articleController.doWrite();

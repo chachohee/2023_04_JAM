@@ -71,5 +71,32 @@ public class MemberController {
 			break;
 		}
 	}
+
+	public void doLogin() {
+		String id = null;
+		String pw = null;
+		System.out.println("== 로그인 ==");
+		while(true) {
+			System.out.printf("아이디 : ");
+			id = sc.nextLine().trim();
+			if (!id.isEmpty()) {
+				break;
+			}
+			System.out.println("아이디를 입력해주세요.");
+		}
+		while(true) {
+			System.out.printf("비밀번호 : ");
+			pw = sc.nextLine().trim();
+			if (!pw.isEmpty()) {
+				System.out.println("비밀번호를 입력해주세요.");
+			}
+		}
+		//db
+		//loginId 조건으로 검색해서 있으면 비밀번호 일치하는지 확인.
+		int existingId = memberService.existingLoginId(id);
+		if (existingId != 0) {
+			
+		}
+	}
 }
 

@@ -31,4 +31,13 @@ public class MemberDAO {
 		sql.append(", name = ?", name);
 		return DBUtil.insert(conn, sql); 
 	}
+	
+	public int existingLoginId(String loginId) {
+		sql = new SecSql();
+		sql.append("SELECT COUNT(*)");
+		sql.append("FROM `member`");
+		sql.append("WHERE loginId = ?", loginId);
+		
+		return DBUtil.selectRowIntValue(conn, sql);
+	}
 }

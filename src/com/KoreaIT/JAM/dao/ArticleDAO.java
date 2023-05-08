@@ -50,8 +50,7 @@ public class ArticleDAO {
 		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
-		Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-		return articleMap;
+		return DBUtil.selectRow(conn, sql);
 	}
 	
 	public int deleteArticle(int id) {

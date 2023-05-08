@@ -3,8 +3,8 @@ package com.KoreaIT.JAM.controller;
 import java.sql.Connection;
 import java.util.Scanner;
 
+import com.KoreaIT.JAM.Member;
 import com.KoreaIT.JAM.service.MemberService;
-import com.KoreaIT.JAM.util.SecSql;
 
 public class MemberController {
 	private Scanner sc;
@@ -75,27 +75,42 @@ public class MemberController {
 	public void doLogin() {
 		String id = null;
 		String pw = null;
-		System.out.println("== 로그인 ==");
+		int memberId = 0;
+		
 		while(true) {
-			System.out.printf("아이디 : ");
-			id = sc.nextLine().trim();
-			if (!id.isEmpty()) {
-				break;
+			System.out.println("== 로그인 ==");
+			while(true) {
+				System.out.printf("아이디 : ");
+				id = sc.nextLine().trim();
+				if (!id.isEmpty()) {
+					memberId = memberService.existingLoginId(id);
+					break;
+				}
+				System.out.println("아이디를 입력해주세요.");
+			}	
+			//해당 id 존재하는지
+			if (memberId == 0) {
+				System.out.println("해당 아이디는 존재하지 않습니다.");
+				System.out.println();
+				continue;
 			}
-			System.out.println("아이디를 입력해주세요.");
-		}
-		while(true) {
-			System.out.printf("비밀번호 : ");
-			pw = sc.nextLine().trim();
-			if (!pw.isEmpty()) {
-				System.out.println("비밀번호를 입력해주세요.");
+			while(true) {
+				System.out.printf("비밀번호 : ");
+				pw = sc.nextLine().trim();
+				if (pw.isEmpty()) {
+					System.out.println("비밀번호를 입력해주세요.");
+					continue;
+				}
+				Member member = memberService.selectMemberById(memberId);
+				if (pw.equals(member.loginPw)) {
+					System.out.println(id + "님 로그인하셨습니다~~");
+					System.out.println();
+					break;
+				}
+				System.out.println("비밀번호가 틀립니다.");
+				continue;	
 			}
-		}
-		//db
-		//loginId 조건으로 검색해서 있으면 비밀번호 일치하는지 확인.
-		int existingId = memberService.existingLoginId(id);
-		if (existingId != 0) {
-			
+			break;
 		}
 	}
 }

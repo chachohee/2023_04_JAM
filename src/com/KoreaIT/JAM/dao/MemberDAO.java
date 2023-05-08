@@ -1,6 +1,7 @@
 package com.KoreaIT.JAM.dao;
 
 import java.sql.Connection;
+import java.util.Map;
 
 import com.KoreaIT.JAM.util.DBUtil;
 import com.KoreaIT.JAM.util.SecSql;
@@ -39,5 +40,14 @@ public class MemberDAO {
 		sql.append("WHERE loginId = ?", loginId);
 		
 		return DBUtil.selectRowIntValue(conn, sql);
+	}
+	
+	public Map<String, Object> selectMemberById(int id) {
+		sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM `member`");
+		sql.append("WHERE id = ?", id);
+		
+		return DBUtil.selectRow(conn, sql);
 	}
 }

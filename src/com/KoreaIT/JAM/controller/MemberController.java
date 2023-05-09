@@ -3,8 +3,9 @@ package com.KoreaIT.JAM.controller;
 import java.sql.Connection;
 import java.util.Scanner;
 
-import com.KoreaIT.JAM.Member;
+import com.KoreaIT.JAM.dto.Member;
 import com.KoreaIT.JAM.service.MemberService;
+import com.KoreaIT.JAM.session.Session;
 
 public class MemberController {
 	private Scanner sc;
@@ -73,43 +74,41 @@ public class MemberController {
 	}
 
 	public void doLogin() {
-		String id = null;
-		String pw = null;
-		int memberId = 0;
-		
+		System.out.println("== 로그인 ==");
 		while(true) {
-			System.out.println("== 로그인 ==");
-			while(true) {
-				System.out.printf("아이디 : ");
-				id = sc.nextLine().trim();
-				if (!id.isEmpty()) {
-					memberId = memberService.existingLoginId(id);
-					break;
-				}
+			System.out.printf("로그인 아이디 : ");
+			String loginId = sc.nextLine().trim();
+			if(loginId.length() == 0) {
 				System.out.println("아이디를 입력해주세요.");
-			}	
-			//해당 id 존재하는지
-			if (memberId == 0) {
-				System.out.println("해당 아이디는 존재하지 않습니다.");
-				System.out.println();
 				continue;
 			}
+			
+			Member member = memberService.selectMember(loginId);
+			if(member == null) {
+				System.out.println(loginId + "(은)는 존재하지 않는 아이디입니다.");
+				System.out.println();
+				return;//다시 명령어 받으러 감.
+			}
+			
 			while(true) {
-				System.out.printf("비밀번호 : ");
-				pw = sc.nextLine().trim();
-				if (pw.isEmpty()) {
+				System.out.printf("로그인 비밀번호 : ");
+				String loginPw = sc.nextLine().trim();
+				if(loginPw.length() == 0) {
 					System.out.println("비밀번호를 입력해주세요.");
 					continue;
 				}
-				Member member = memberService.selectMemberById(memberId);
-				if (pw.equals(member.loginPw)) {
-					System.out.println(id + "님 로그인하셨습니다~~");
-					System.out.println();
-					break;
+				if(!member.loginPw.equals(loginPw)) {
+					System.out.println("비밀번호가 일치하지 않습니다.");
+					continue;
 				}
-				System.out.println("비밀번호가 틀립니다.");
-				continue;	
+				break;
 			}
+			System.out.println(member.loginId + "님 환영합니다. ^^");
+			System.out.println();
+			
+			Session.loginedMember = member;
+			Session.loginedMemberId = member.id;
+			
 			break;
 		}
 	}

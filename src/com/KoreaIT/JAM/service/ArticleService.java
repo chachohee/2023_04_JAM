@@ -4,11 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.KoreaIT.JAM.Article;
+import com.KoreaIT.JAM.dto.Article;
 import com.KoreaIT.JAM.dao.ArticleDAO;
-import com.KoreaIT.JAM.util.DBUtil;
-import com.KoreaIT.JAM.util.SecSql;
 
 public class ArticleService {
 	ArticleDAO articleDAO;

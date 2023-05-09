@@ -1,15 +1,10 @@
 package com.KoreaIT.JAM.controller;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
-import com.KoreaIT.JAM.Article;
+import com.KoreaIT.JAM.dto.Article;
 import com.KoreaIT.JAM.service.ArticleService;
-import com.KoreaIT.JAM.util.DBUtil;
-import com.KoreaIT.JAM.util.SecSql;
 
 public class ArticleController {
 	private Scanner sc;

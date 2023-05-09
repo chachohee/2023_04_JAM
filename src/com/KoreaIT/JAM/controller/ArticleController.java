@@ -21,22 +21,21 @@ public class ArticleController {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
 		}
+		int memberId = Session.loginedMemberId;
 		System.out.println("== 게시물 작성 ==");
 		System.out.print("제목: ");
 		String title = sc.nextLine();
 		System.out.print("내용: ");
 		String body = sc.nextLine();
-		int id = articleService.doWrite(title, body);
-		System.out.printf("%d번 게시글이 생성되었습니다\n", id);
-		System.out.println();
+		int id = articleService.doWrite(memberId, title, body);
+		System.out.printf("%d번 게시글이 생성되었습니다.\n", id);
 	}
 	
 	public void showDetail(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 		Article article = articleService.getArticle(id);
 		if (article == null) {
-			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
-			System.out.println();
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
 		System.out.printf("== %d번 게시글 상세보기 ==\n", id);
@@ -45,13 +44,12 @@ public class ArticleController {
 		System.out.println("내용: " + article.body);
 		System.out.println("등록일: " + article.regDate);
 		System.out.println("수정일: " + article.updateDate);
-		System.out.println();
 	}
 	
 	public void showList() {
 		List<Article> articles = articleService.getArticles();
 		if (articles.size() == 0) {
-			System.out.println("존재하는 게시물이 없습니다");
+			System.out.println("존재하는 게시물이 없습니다.");
 			return;
 		}
 		System.out.println("== 게시물 리스트 ==");
@@ -59,7 +57,6 @@ public class ArticleController {
 		for (Article article : articles) {
 			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, article.regDate);
 		}
-		System.out.println();
 	}
 	
 	public void doModify(String cmd) {
@@ -75,8 +72,7 @@ public class ArticleController {
 		//articleCount에는 컬럼에 해당하는 데이터를 가져옴.
 		//id로 조회했다면 조회하려는 id 번호를 가져왔을 것임.
 		if (articleCount == 0) {
-			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
-			System.out.println();
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
 		
@@ -87,8 +83,7 @@ public class ArticleController {
 		String body = sc.nextLine();
 
 		id = articleService.doModify(id, title, body);
-		System.out.printf("%d번 게시글이 수정되었습니다\n", id);
-		System.out.println();
+		System.out.printf("%d번 게시글이 수정되었습니다.\n", id);
 	}
 	
 	public void doDelete(String cmd) {
@@ -99,11 +94,10 @@ public class ArticleController {
 		int id = Integer.parseInt(cmd.split(" ")[2]); 
 		boolean existArticle = articleService.existingArticle(id);
 		if (!existArticle) {
-			System.out.printf("%d번 게시글은 존재하지 않습니다\n", id);
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
 		id = articleService.doDelete(id);
 		System.out.printf("%d번 글이 삭제되었습니다.", id);
-		System.out.println();
 	}
 }

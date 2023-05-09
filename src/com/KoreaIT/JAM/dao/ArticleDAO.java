@@ -34,11 +34,12 @@ public class ArticleDAO {
 		return DBUtil.selectRowIntValue(conn, sql);
 	}
 	
-	public int insertArticle(String title, String body) {
+	public int insertArticle(int memberId, String title, String body) {
 		sql = new SecSql();
 		sql.append("INSERT INTO article");
 		sql.append("SET regDate = NOW()");
 		sql.append(", updateDate = NOW()");
+		sql.append(", memberId = ?", memberId);
 		sql.append(", title = ?", title);
 		sql.append(", `body` = ?", body);
 		

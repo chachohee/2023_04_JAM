@@ -71,9 +71,8 @@ public class MemberController {
 				continue;
 			}
 			int id = memberService.doJoin(loginId, loginPw, name);
-			System.out.printf("%d번째 회원이 생성되었습니다\n", id);
-			System.out.printf("%s님 환영합니다~\n", name);
-			System.out.println();
+			System.out.printf("%d번째 회원이 생성되었습니다.\n", id);
+			System.out.printf("%s님 환영합니다. ^^\n", name);
 			break;
 		}
 	}
@@ -83,7 +82,6 @@ public class MemberController {
 		if(Session.isLogined()) {
 			String loginedId = Session.loginedMember.loginId;
 			System.out.println(loginedId + "님이 로그인한 상태입니다.");
-			System.out.println();
 			return;
 		}
 		System.out.println("== 로그인 ==");
@@ -98,7 +96,6 @@ public class MemberController {
 			Member member = memberService.selectMember(loginId);
 			if(member == null) {
 				System.out.println(loginId + "(은)는 존재하지 않는 아이디입니다.");
-				System.out.println();
 				return;//다시 명령어 받으러 감.
 			}
 			
@@ -116,10 +113,8 @@ public class MemberController {
 				break;
 			}
 			System.out.println(member.loginId + "님 환영합니다. ^^");
-			System.out.println();
 
 			Session.login(member);
-			
 			break;
 		}
 	}
@@ -127,12 +122,10 @@ public class MemberController {
 	public void doLogout() {
 		if(!Session.isLogined()) {
 			System.out.println("이미 로그아웃한 상태입니다.");
-			System.out.println();
 			return;
 		}
 		Session.logout();
 		System.out.println("로그아웃 되었습니다.");
-		System.out.println();
 	}
 }
 

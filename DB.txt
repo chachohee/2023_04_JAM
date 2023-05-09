@@ -4,50 +4,50 @@ USE jdbc_article_manager;
 
 CREATE TABLE article(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
+    regDate DATETIME NOT NULL DEFAULT NOW(),
     updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
     title VARCHAR(100) NOT NULL,
     `body` TEXT NOT NULL
 );
 
-SELECT * FROM article;
-
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = '제목1',
-`body` = '내용1'
-;
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = '제목2',
-`body` = '내용2'
-;
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = '제목3',
-`body` = '내용3'
-;
-
-INSERT INTO article
-SET regDate = NOW(),
-updateDate = NOW(),
-title = CONCAT('제목', RAND()),
-`body` = CONCAT('내용', RAND())
-;
-
-//MEMER
 CREATE TABLE `member`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    loginId VARCHAR(20) NOT NULL,
-    loginPw VARCHAR(30) NOT NULL,
-    `name` VARCHAR(100) NOT NULL,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL
+    regDate DATETIME NOT NULL DEFAULT NOW(),
+    updateDate DATETIME NOT NULL,
+    loginId VARCHAR(50) NOT NULL UNIQUE,
+    loginPw VARCHAR(50) NOT NULL, 
+    `name` VARCHAR(50) NOT NULL
 );
+
+INSERT INTO `member`
+SET updateDate = NOW(), 
+loginId = 'test1',
+loginPw = '1234',
+`name` = 'test1';
+INSERT INTO `member`
+SET updateDate = NOW(), 
+loginId = 'test2',
+loginPw = '1234',
+`name` = 'test2';
+INSERT INTO `member`
+SET updateDate = NOW(), 
+loginId = 'test3',
+loginPw = '1234',
+`name` = 'test3';
+INSERT INTO `member`
+SET updateDate = NOW(), 
+loginId = 'test4',
+loginPw = '1234',
+`name` = 'test4';
+
+SELECT * FROM article;
 SELECT * FROM `member`;
-DROP TABLE `member`;
-ALTER TABLE `member` MODIFY COLUMN loginId VARCHAR(50) NOT NULL UNIQUE;
-DESC `member`;
+
+SET @CNT = 0;
+UPDATE article SET article.id = @CNT:=@CNT+1;
+ALTER TABLE article auto_increment=13;
+
+SET @CNT = 0;
+UPDATE `member`  SET `member`.id = @CNT:=@CNT+1;
+ALTER TABLE `member` auto_increment=13;

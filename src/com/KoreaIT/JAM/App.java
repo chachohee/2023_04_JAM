@@ -44,7 +44,7 @@ public class App {
 				if (cmd.equals("member join")) {
 					memberController.doJoin();
 				//로그인	
-				} else if (cmd.equals("member login")) {
+				} else if (cmd.equals("login")) {
 					memberController.doLogin();
 				//로그아웃
 				} else if (cmd.equals("logout")) {

@@ -23,8 +23,8 @@ public class ArticleService {
 		return articleCount;
 	}
 	
-	public int doWrite(String title, String body) {
-		return articleDAO.insertArticle(title, body);
+	public int doWrite(int memberId, String title, String body) {
+		return articleDAO.insertArticle(memberId, title, body);
 	}
 	
 	public Article getArticle(int id) {

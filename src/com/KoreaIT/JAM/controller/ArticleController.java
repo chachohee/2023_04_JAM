@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.KoreaIT.JAM.dto.Article;
 import com.KoreaIT.JAM.service.ArticleService;
 import com.KoreaIT.JAM.session.Session;
+import com.KoreaIT.JAM.util.Util;
 
 public class ArticleController {
 	private Scanner sc;
@@ -42,8 +43,8 @@ public class ArticleController {
 		System.out.println("아이디: " + article.id);
 		System.out.println("제목: " + article.title);
 		System.out.println("내용: " + article.body);
-		System.out.println("등록일: " + article.regDate);
-		System.out.println("수정일: " + article.updateDate);
+		System.out.println("등록일: " + Util.datetimeFormat(article.regDate));
+		System.out.println("수정일: " + Util.datetimeFormat(article.updateDate));
 	}
 	
 	public void showList() {
@@ -55,7 +56,7 @@ public class ArticleController {
 		System.out.println("== 게시물 리스트 ==");
 		System.out.println("번호	|	제목	|	날짜");
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, article.regDate);
+			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, Util.datetimeFormat(article.regDate));
 		}
 	}
 	

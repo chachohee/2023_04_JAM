@@ -10,4 +10,18 @@ public class Session {
 		loginedMemberId = -1;
 		loginedMember = null;
 	}
+
+	public static void login(Member member) {
+		loginedMember = member;
+		loginedMemberId = member.id;		
+	}
+	
+	public static void logout() {
+		loginedMemberId = -1;
+		loginedMember = null;
+	}
+
+	public static boolean isLogined() {
+		return loginedMemberId != -1;
+	}
 }

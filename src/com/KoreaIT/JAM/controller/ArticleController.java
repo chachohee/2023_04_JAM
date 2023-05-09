@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import com.KoreaIT.JAM.dto.Article;
 import com.KoreaIT.JAM.service.ArticleService;
+import com.KoreaIT.JAM.session.Session;
 
 public class ArticleController {
 	private Scanner sc;
@@ -16,6 +17,10 @@ public class ArticleController {
 	}
 	
 	public void doWrite() {
+		if(!Session.isLogined()) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
 		System.out.println("== 게시물 작성 ==");
 		System.out.print("제목: ");
 		String title = sc.nextLine();
@@ -58,6 +63,10 @@ public class ArticleController {
 	}
 	
 	public void doModify(String cmd) {
+		if(!Session.isLogined()) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
 		// String[] cmdBits = cmd.split(" ");
 		// int id = Integer.parseInt(cmdBits[2]);
 		int id = Integer.parseInt(cmd.split(" ")[2]);//공백을 기준으로 나눠서 배열 3번째(012중 2)에 있는 거 가져옴
@@ -83,6 +92,10 @@ public class ArticleController {
 	}
 	
 	public void doDelete(String cmd) {
+		if(!Session.isLogined()) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
 		int id = Integer.parseInt(cmd.split(" ")[2]); 
 		boolean existArticle = articleService.existingArticle(id);
 		if (!existArticle) {

@@ -46,6 +46,9 @@ public class App {
 				//로그인	
 				} else if (cmd.equals("member login")) {
 					memberController.doLogin();
+				//로그아웃
+				} else if (cmd.equals("logout")) {
+					memberController.doLogout();
 				//글 작성
 				} else if (cmd.equals("article write")) {
 					articleController.doWrite();

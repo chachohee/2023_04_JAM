@@ -40,7 +40,8 @@ public class ArticleController {
 			return;
 		}
 		System.out.printf("== %d번 게시글 상세보기 ==\n", id);
-		System.out.println("아이디: " + article.id);
+		System.out.println("글번호: " + article.id);
+		System.out.println("작성자: " + article.writerName);
 		System.out.println("제목: " + article.title);
 		System.out.println("내용: " + article.body);
 		System.out.println("등록일: " + Util.datetimeFormat(article.regDate));
@@ -54,9 +55,9 @@ public class ArticleController {
 			return;
 		}
 		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호	|	제목	|	날짜");
+		System.out.println("번호	|	제목		|	작성자	|	날짜");
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, Util.datetimeFormat(article.regDate));
+			System.out.printf("%d	|	%s	|	%s	|	%s\n", article.id, article.title, article.writerName, Util.datetimeFormat(article.regDate));
 		}
 	}
 	

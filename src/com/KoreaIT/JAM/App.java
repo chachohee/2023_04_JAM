@@ -65,6 +65,10 @@ public class App {
 				} else if (cmd.startsWith("article detail ")) {
 					articleController.showDetail(cmd);
 				} else {
+					if (cmd.equals("article delete") || cmd.equals("article modify")) {
+						System.out.println("게시글 번호를 입력해주세요.");
+						continue;
+					}
 					System.out.println("존재하는 명령어가 없습니다.");
 				}
 			} //end while(데이터 삽입, 조회, 수정, 삭제, 상세)

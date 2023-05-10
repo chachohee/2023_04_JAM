@@ -48,9 +48,12 @@ public class ArticleDAO {
 	
 	public Map<String, Object> selectArticleById(int id) {
 		sql = new SecSql();
-		sql.append("SELECT *");
-		sql.append("FROM article");
-		sql.append("WHERE id = ?", id);
+		sql.append("SELECT A.*, M.name");
+		sql.append("FROM article A");
+		sql.append("INNER JOIN `member` M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("WHERE A.id = ?", id);
+		
 		return DBUtil.selectRow(conn, sql);
 	}
 	
@@ -64,13 +67,13 @@ public class ArticleDAO {
 	
 	public List<Map<String, Object>> selectAllArticles() {
 		sql = new SecSql();
-		sql.append("SELECT *");
-		sql.append("FROM article");
-		sql.append("ORDER BY id DESC");
-		
-		List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
-		
-		return articleListMap;
+		sql.append("SELECT A.*, M.name");
+		sql.append("FROM article A");
+		sql.append("INNER JOIN `member` M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("ORDER BY A.id DESC");
+
+		return DBUtil.selectRows(conn, sql);
 	}
 	
 	public int updateArticle(int id, String title, String body) {

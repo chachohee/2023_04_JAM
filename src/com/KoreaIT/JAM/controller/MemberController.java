@@ -81,7 +81,7 @@ public class MemberController {
 		//로그인 검증(이미 로그인한 상태라면 로그아웃하고 오도록.
 		if(Session.isLogined()) {
 			String loginedId = Session.loginedMember.loginId;
-			System.out.println(loginedId + "님이 로그인한 상태입니다.");
+			System.out.println(loginedId + " 님이 로그인한 상태입니다.");
 			return;
 		}
 		System.out.println("== 로그인 ==");
@@ -112,7 +112,7 @@ public class MemberController {
 				}
 				break;
 			}
-			System.out.println(member.loginId + "님 환영합니다. ^^");
+			System.out.println(member.loginId + " 님 환영합니다. ^^");
 
 			Session.login(member);
 			break;

@@ -31,7 +31,6 @@ public class App {
 			ArticleController articleController = new ArticleController(conn, sc);
 			
 			while (true) {
-				
 				System.out.printf("명령어) ");
 				String cmd = sc.nextLine().trim();
 				cmd = cmd.toLowerCase();
@@ -53,8 +52,8 @@ public class App {
 				} else if (cmd.equals("article write")) {
 					articleController.doWrite();
 				//글 조회
-				} else if (cmd.equals("article list")) {
-					articleController.showList();
+				} else if (cmd.startsWith("article list")) {
+					articleController.showList(cmd);
 				//글 수정
 				} else if (cmd.startsWith("article modify ")) {
 					articleController.doModify(cmd);

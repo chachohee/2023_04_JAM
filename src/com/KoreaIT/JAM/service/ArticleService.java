@@ -36,8 +36,8 @@ public class ArticleService {
 		return new Article(articleMap);
 	}
 	
-	public List<Article> getArticles() {
-		List<Map<String, Object>> articleListMap = articleDAO.selectAllArticles();
+	public List<Article> getArticles(String keyword) {
+		List<Map<String, Object>> articleListMap = articleDAO.selectAllArticles(keyword);
 		List<Article> articles = new ArrayList<>();
 		for(Map<String, Object> articleMap : articleListMap) {
 			articles.add(new Article(articleMap));
@@ -52,6 +52,10 @@ public class ArticleService {
 	
 	public int doDelete(int id) {
 		return articleDAO.deleteArticle(id);
+	}
+
+	public int updateCount(int id) {
+		return articleDAO.updateCount(id);
 	}
 
 }

@@ -34,13 +34,16 @@ public class ArticleController {
 	
 	public void showDetail(String cmd) {
 		int id = Integer.parseInt(cmd.split(" ")[2]);
+		int afftectedRow = articleService.updateCount(id);//조회수 증가
 		Article article = articleService.getArticle(id);
-		if (article == null) {
+		if (afftectedRow == 0) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
+		
 		System.out.printf("== %d번 게시글 상세보기 ==\n", id);
 		System.out.println("글번호: " + article.id);
+		System.out.println("조회수: " + article.count);
 		System.out.println("작성자: " + article.writerName);
 		System.out.println("제목: " + article.title);
 		System.out.println("내용: " + article.body);
@@ -48,16 +51,22 @@ public class ArticleController {
 		System.out.println("수정일: " + Util.datetimeFormat(article.updateDate));
 	}
 	
-	public void showList() {
-		List<Article> articles = articleService.getArticles();
+	public void showList(String cmd) {
+		//article list 다음에 검색어 오면 검색한 거 보여주고 없으면 그냥 전체 리스트 보여주기.
+		String keyword = cmd.substring("article list".length()).trim();
+		
+		List<Article> articles = articleService.getArticles(keyword);
 		if (articles.size() == 0) {
 			System.out.println("존재하는 게시물이 없습니다.");
 			return;
 		}
 		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호	|	제목		|	작성자	|	날짜");
+		if(keyword.length() > 0) {
+			System.out.println("검색어: " + keyword);
+		}
+		System.out.println("번호	|	제목		|	작성자	|	조회수	|	날짜");
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s	|	%s	|	%s\n", article.id, article.title, article.writerName, Util.datetimeFormat(article.regDate));
+			System.out.printf("%d	|	%s	|	%s	|	%s	|	%s\n", article.id, article.title, article.writerName, article.count, Util.datetimeFormat(article.regDate));
 		}
 	}
 	

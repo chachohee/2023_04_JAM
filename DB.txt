@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS jdbc_article_manager;
 CREATE DATABASE jdbc_article_manager;
 USE jdbc_article_manager;
 
+TRUNCATE TABLE article;
+
 CREATE TABLE article(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL DEFAULT NOW(),
@@ -11,6 +13,8 @@ CREATE TABLE article(
     `body` TEXT NOT NULL
 );
 
+ALTER TABLE article ADD COLUMN `count` INT UNSIGNED NOT NULL AFTER memberId;
+
 CREATE TABLE `member`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL DEFAULT NOW(),
@@ -19,6 +23,13 @@ CREATE TABLE `member`(
     loginPw VARCHAR(50) NOT NULL, 
     `name` VARCHAR(50) NOT NULL
 );
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목', RAND()),
+`body` = CONCAT('내용', RAND())
+;
 
 INSERT INTO `member`
 SET updateDate = NOW(), 
@@ -46,8 +57,14 @@ SELECT * FROM `member`;
 
 SET @CNT = 0;
 UPDATE article SET article.id = @CNT:=@CNT+1;
-ALTER TABLE article auto_increment=13;
+ALTER TABLE article AUTO_INCREMENT=13;
 
 SET @CNT = 0;
 UPDATE `member`  SET `member`.id = @CNT:=@CNT+1;
-ALTER TABLE `member` auto_increment=13;
+ALTER TABLE `member` AUTO_INCREMENT=13;
+
+#조인으로 작성자 이름 가져오기
+SELECT A.*, M.name 
+FROM article A
+INNER JOIN `member` M
+ON A.memberId = M.id;

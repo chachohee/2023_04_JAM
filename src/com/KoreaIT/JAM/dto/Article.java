@@ -8,6 +8,7 @@ public class Article {
 	public LocalDateTime regDate;
 	public LocalDateTime updateDate;
 	public int memberId;
+	public int count;
 	public String title;
 	public String body;
 	public String writerName;
@@ -17,6 +18,7 @@ public class Article {
 		this.regDate = (LocalDateTime) articleMap.get("regDate");
 		this.updateDate = (LocalDateTime) articleMap.get("updateDate");
 		this.memberId = (int) articleMap.get("memberId");
+		this.count = (int) articleMap.get("count");
 		this.title = (String) articleMap.get("title");
 		this.body = (String) articleMap.get("body");
 		this.writerName = (String) articleMap.get("name");

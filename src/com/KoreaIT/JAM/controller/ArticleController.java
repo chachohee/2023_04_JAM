@@ -95,13 +95,12 @@ public class ArticleController {
 			return;
 		}
 		int id = Integer.parseInt(cmd.split(" ")[2]); 
-		boolean existArticle = articleService.existingArticle(id);
-		if (!existArticle) {
+		//권한 체크
+		Article article = articleService.getArticle(id);
+		if(article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
-		//권한 체크
-		Article article = articleService.getArticle(id);
 		if(Session.loginedMemberId != article.memberId) {
 			System.out.println("작성자가 일치하지 않습니다.");
 			return;
